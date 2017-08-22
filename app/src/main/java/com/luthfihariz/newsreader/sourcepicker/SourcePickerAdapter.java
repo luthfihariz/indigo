@@ -34,6 +34,7 @@ class SourcePickerAdapter extends BaseBindingAdapter {
         Source source = mSources.get(position);
         itemBinding.tvSource.setText(source.getName());
         itemBinding.getRoot().setSelected(mSelectedSources.contains(source));
+        itemBinding.tvSource.setSelected(mSelectedSources.contains(source));
     }
 
     List<Source> getSelectedSources() {

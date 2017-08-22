@@ -1,5 +1,7 @@
 package com.luthfihariz.newsreader.util;
 
+import android.support.annotation.Nullable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,6 +15,7 @@ import java.util.Locale;
 public class CalendarUtil {
     private static final String TAG = "CalendarUtil";
 
+    @Nullable
     public static Calendar parseTime(String date, String pattern) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
         try {
@@ -29,6 +32,7 @@ public class CalendarUtil {
         return dateFormat.format(calendar.getTime());
     }
 
+    @Nullable
     public static String adjustTimePattern(String date, String oldPattern, String pattern) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(oldPattern, Locale.getDefault());
         try {

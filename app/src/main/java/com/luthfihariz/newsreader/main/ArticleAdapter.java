@@ -42,8 +42,13 @@ class ArticleAdapter extends BaseBindingAdapter {
         ItemNewsBinding itemBinding = (ItemNewsBinding) binding;
         Article article = mArticles.get(position);
         itemBinding.tvTitle.setText(article.getTitle());
-        itemBinding.tvDate.setText(CalendarUtil.adjustTimePattern(article.getPublishedAt(),
-                "yyyy-MM-dd'T'HH:mm:ss'Z'", "MMM dd"));
+        String formattedDate = CalendarUtil.adjustTimePattern(article.getPublishedAt(),
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", "MMM dd");
+        if (formattedDate == null) {
+            formattedDate = CalendarUtil.adjustTimePattern(article.getPublishedAt(),
+                    "yyyy-MM-dd'T'HH:mm:ss'Z'", "MMM dd");
+        }
+        itemBinding.tvDate.setText(formattedDate);
         itemBinding.tvSource.setText(Uri.parse(article.getUrl()).getHost());
         GlideApp.with(mContext)
                 .load(article.getUrlToImage())

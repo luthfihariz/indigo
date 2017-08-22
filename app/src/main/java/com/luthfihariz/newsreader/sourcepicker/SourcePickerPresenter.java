@@ -57,7 +57,7 @@ public class SourcePickerPresenter implements SourcePickerContract.Presenter {
                         mView.hideProgressBar();
                         mView.showErrorView();
                     }
-                });
+                }).subscribe();
     }
 
     @Override
