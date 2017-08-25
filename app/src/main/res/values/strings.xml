@@ -3,4 +3,5 @@
     <string name="all_save">Save</string>
     <string name="all_pick_channel">News Channel</string>
     <string name="all_general_error">Something went wrong</string>
+    <string name="all_share">Share</string>
 </resources>

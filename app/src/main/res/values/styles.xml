@@ -15,6 +15,7 @@
 
     <style name="NewsBrowserToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@color/colorPrimary</item>
+        <item name="contentInsetStartWithNavigation">@dimen/xx_small_margin</item>
     </style>
 
     <style name="Header2" parent="android:TextAppearance">

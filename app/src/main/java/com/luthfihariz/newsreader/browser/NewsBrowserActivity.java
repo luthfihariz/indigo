@@ -9,12 +9,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -107,12 +106,35 @@ public class NewsBrowserActivity extends AppCompatActivity implements NewsBrowse
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.news_browser_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
+        } else if (item.getItemId() == R.id.menu_share) {
+            doShareIntent();
+            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void doShareIntent() {
+        String url = getIntent().getStringExtra(KEY_URL);
+        String newsTitle = getIntent().getStringExtra(KEY_NEWS_TITLE);
+
+        String stringBuilder = newsTitle + " " + url + "\n\nIndigo bit.ly/indigonewsapp";
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, stringBuilder);
+
+        startActivity(Intent.createChooser(intent, "Share news via"));
     }
 }
