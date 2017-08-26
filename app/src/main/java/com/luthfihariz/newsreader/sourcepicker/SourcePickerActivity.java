@@ -17,6 +17,7 @@ import com.luthfihariz.newsreader.data.Source;
 import com.luthfihariz.newsreader.databinding.ActivitySourcePickerBinding;
 import com.luthfihariz.newsreader.main.MainActivity;
 import com.luthfihariz.newsreader.util.CollectionUtil;
+import com.luthfihariz.newsreader.util.analytics.AnalyticsTracker;
 
 import java.util.List;
 
@@ -29,11 +30,13 @@ public class SourcePickerActivity extends AppCompatActivity implements SourcePic
     private ActivitySourcePickerBinding mBinding;
     private SourcePickerContract.Presenter mPresenter;
     private SourcePickerAdapter mAdapter;
+    private AnalyticsTracker mAnalytics;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_source_picker);
+        mAnalytics = AnalyticsTracker.getInstance(this);
 
         mPresenter = new SourcePickerPresenter(
                 Injection.provideRepository(getApplicationContext()),
@@ -46,6 +49,8 @@ public class SourcePickerActivity extends AppCompatActivity implements SourcePic
         mBinding.btnSave.setOnClickListener(v -> {
             SourcePickerAdapter adapter = (SourcePickerAdapter) mBinding.rvSource.getAdapter();
             mPresenter.saveSelectedSources(adapter.getSelectedSources());
+
+            mAnalytics.logSelectChannel(adapter.getSelectedSources());
         });
     }
 

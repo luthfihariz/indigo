@@ -89,7 +89,6 @@ public class SourcePickerPresenter implements SourcePickerContract.Presenter {
         if (mView != null) {
             mView.goToNewsReader();
         }
-
     }
 
 }

@@ -20,6 +20,7 @@ import com.luthfihariz.newsreader.data.Article;
 import com.luthfihariz.newsreader.databinding.ActivityMainBinding;
 import com.luthfihariz.newsreader.sourcepicker.SourcePickerActivity;
 import com.luthfihariz.newsreader.util.LogHandler;
+import com.luthfihariz.newsreader.util.analytics.AnalyticsTracker;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private ActivityMainBinding mBinding;
     private MainContract.Presenter mPresenter;
     private ArticleAdapter mAdapter;
+    private AnalyticsTracker mAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mBinding.srlNews.setOnRefreshListener(() -> {
             mPresenter.refresh();
         });
+
+        // init analytics
+        mAnalytics = AnalyticsTracker.getInstance(this);
     }
 
     @Override
@@ -100,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     public static void intent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
@@ -114,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_pick_channel) {
             SourcePickerActivity.intent(this);
+            mAnalytics.logEditChannel();
             return true;
         } else {
             return super.onOptionsItemSelected(item);

@@ -20,6 +20,7 @@ import android.webkit.WebViewClient;
 
 import com.luthfihariz.newsreader.R;
 import com.luthfihariz.newsreader.databinding.ActivityNewsBrowserBinding;
+import com.luthfihariz.newsreader.util.analytics.AnalyticsTracker;
 
 /**
  * Created by luthfihariz on 6/13/17.
@@ -30,27 +31,31 @@ public class NewsBrowserActivity extends AppCompatActivity implements NewsBrowse
     public static final String KEY_URL = "url";
     public static final String KEY_NEWS_TITLE = "newsTitle";
 
-    private NewsBrowserContract.Presenter mPresenter;
     private ActivityNewsBrowserBinding mBinding;
+    private AnalyticsTracker mAnalytics;
+
+    private String mTitle;
+    private String mSubtitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_news_browser);
+        mAnalytics = AnalyticsTracker.getInstance(this);
 
         String url = getIntent().getStringExtra(KEY_URL);
-        String title = getIntent().getStringExtra(KEY_NEWS_TITLE);
-        String subtitle = Uri.parse(url).getHost();
-        setupToolbar(title, subtitle);
+        mTitle = getIntent().getStringExtra(KEY_NEWS_TITLE);
+        mSubtitle = Uri.parse(url).getHost();
+        setupToolbar();
         setupWebView(url);
     }
 
-    private void setupToolbar(String title, String subtitle) {
+    private void setupToolbar() {
         setSupportActionBar(mBinding.toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(title);
-            getSupportActionBar().setSubtitle(subtitle);
+            getSupportActionBar().setTitle(mTitle);
+            getSupportActionBar().setSubtitle(mSubtitle);
         }
     }
 
@@ -65,7 +70,7 @@ public class NewsBrowserActivity extends AppCompatActivity implements NewsBrowse
 
     @Override
     public void setPresenter(NewsBrowserContract.Presenter presenter) {
-        mPresenter = presenter;
+
     }
 
 
@@ -102,6 +107,7 @@ public class NewsBrowserActivity extends AppCompatActivity implements NewsBrowse
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             mBinding.srlNewsBrowser.setRefreshing(false);
+            mAnalytics.logReadNews(mSubtitle, mTitle);
         }
     }
 
@@ -136,5 +142,7 @@ public class NewsBrowserActivity extends AppCompatActivity implements NewsBrowse
         intent.putExtra(Intent.EXTRA_TEXT, stringBuilder);
 
         startActivity(Intent.createChooser(intent, "Share news via"));
+
+        mAnalytics.logShare(mSubtitle, mTitle);
     }
 }
