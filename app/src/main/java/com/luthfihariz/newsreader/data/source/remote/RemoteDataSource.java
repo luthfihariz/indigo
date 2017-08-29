@@ -11,8 +11,6 @@ import com.luthfihariz.newsreader.data.source.NewsDataSource;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 
 
 /**
@@ -44,33 +42,27 @@ public class RemoteDataSource implements NewsDataSource {
     }
 
     @Override
-    public Observable<List<Article>> getArticles() {
-        return mApiService.getArticles(null)
-                .map(ArticleResponse::getArticles);
+    public Observable<Void> feedLocalSources() {
+        throw new RuntimeException("Function not implemented");
+    }
+
+    @Override
+    public Observable<List<Source>> getSourcesByCategory(String category) {
+        throw new RuntimeException("Function not implemented");
+    }
+
+    @Override
+    public Observable<List<Article>> getArticlesByCategory(String category) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> saveSources(List<Source> sources) {
+        return null;
     }
 
     @Override
     public Observable<List<Source>> getSources() {
         return mApiService.getSources().map(SourceResponse::getSources);
-    }
-
-    @Override
-    public Observable<Void> saveUserSelectedSources(List<Source> selectedSources) {
-        throw new RuntimeException("Function not implemented");
-    }
-
-    @Override
-    public Observable<List<Source>> getUserSelectedSources() {
-        throw new RuntimeException("Function not implemented");
-    }
-
-    @Override
-    public Observable<Boolean> isSelectedSourceEmpty() {
-        throw new RuntimeException("Function not implemented");
-    }
-
-    @Override
-    public Observable<Integer> getUserSelectedSourceSize() {
-        throw new RuntimeException("Function not implemented");
     }
 }

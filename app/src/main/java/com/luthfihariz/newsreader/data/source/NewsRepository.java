@@ -8,13 +8,6 @@ import com.luthfihariz.newsreader.data.source.remote.RemoteDataSource;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-
-import static io.reactivex.Observable.fromIterable;
 
 
 /**
@@ -42,16 +35,16 @@ public class NewsRepository implements NewsDataSource {
     }
 
 
-    public Observable<List<Article>> getArticles() {
-        Observable<List<Source>> userSourcesObservable = getUserSelectedSources();
-
-        return userSourcesObservable.flatMap(sources -> Observable.fromIterable(sources)
-                .flatMap(source -> mRemoteDataSource.getArticles(source.getId())));
+    public Observable<List<Article>> getArticles(String source) {
+        return mRemoteDataSource.getArticles(source);
     }
 
     @Override
-    public Observable<List<Article>> getArticles(String sources) {
-        return mRemoteDataSource.getArticles(sources);
+    public Observable<List<Article>> getArticlesByCategory(String category) {
+        Observable<List<Source>> userSourcesObservable = getSourcesByCategory(category);
+
+        return userSourcesObservable.flatMap(sources -> Observable.fromIterable(sources)
+                .flatMap(source -> mRemoteDataSource.getArticles(source.getId())));
     }
 
     @Override
@@ -60,22 +53,18 @@ public class NewsRepository implements NewsDataSource {
     }
 
     @Override
-    public Observable<Void> saveUserSelectedSources(List<Source> sources) {
-        return mLocalDataSource.saveUserSelectedSources(sources);
+    public Observable<Void> feedLocalSources() {
+        return mRemoteDataSource.getSources().flatMap(this::saveSources);
     }
 
     @Override
-    public Observable<List<Source>> getUserSelectedSources() {
-        return mLocalDataSource.getUserSelectedSources();
+    public Observable<Void> saveSources(List<Source> sources) {
+        return mLocalDataSource.saveSources(sources);
     }
 
-    @Override
-    public Observable<Boolean> isSelectedSourceEmpty() {
-        return mLocalDataSource.isSelectedSourceEmpty();
-    }
 
     @Override
-    public Observable<Integer> getUserSelectedSourceSize() {
-        return mLocalDataSource.getUserSelectedSourceSize();
+    public Observable<List<Source>> getSourcesByCategory(String category) {
+        return mLocalDataSource.getSourcesByCategory(category);
     }
 }

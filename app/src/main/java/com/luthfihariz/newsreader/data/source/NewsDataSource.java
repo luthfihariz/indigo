@@ -14,17 +14,15 @@ import io.reactivex.Observable;
 
 public interface NewsDataSource {
 
-    Observable<List<Article>> getArticles(String sources);
+    Observable<List<Article>> getArticles(String source);
 
-    Observable<List<Article>> getArticles();
+    Observable<List<Article>> getArticlesByCategory(String category);
+
+    Observable<Void> feedLocalSources();
+
+    Observable<List<Source>> getSourcesByCategory(String category);
+
+    Observable<Void> saveSources(List<Source> sources);
 
     Observable<List<Source>> getSources();
-
-    Observable<Void> saveUserSelectedSources(List<Source> selectedSources);
-
-    Observable<List<Source>> getUserSelectedSources();
-
-    Observable<Boolean> isSelectedSourceEmpty();
-
-    Observable<Integer> getUserSelectedSourceSize();
 }

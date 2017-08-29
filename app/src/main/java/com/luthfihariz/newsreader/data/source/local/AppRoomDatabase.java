@@ -13,7 +13,7 @@ import com.luthfihariz.newsreader.data.Source;
 /**
  * Created by luthfihariz on 6/12/17.
  */
-@Database(entities = {Source.class}, version = 1)
+@Database(entities = {Source.class}, version = 2)
 public abstract class AppRoomDatabase extends RoomDatabase {
 
     private static AppRoomDatabase sInstance;

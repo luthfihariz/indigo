@@ -18,15 +18,18 @@ import java.util.List;
 
 @Dao
 public interface SourceDao {
-    @Query("SELECT * FROM selected_source")
+    @Query("SELECT * FROM source")
     Publisher<List<Source>> getSelectedSources();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long[] insertAll(List<Source> sources);
 
-    @Query("DELETE FROM selected_source")
+    @Query("DELETE FROM source")
     void flushTable();
 
-    @Query("SELECT COUNT(*) FROM selected_source")
+    @Query("SELECT COUNT(*) FROM source")
     Publisher<Integer> count();
+
+    @Query("SELECT * FROM source WHERE category = :category")
+    Publisher<List<Source>> getSourcesByCategory(String category);
 }

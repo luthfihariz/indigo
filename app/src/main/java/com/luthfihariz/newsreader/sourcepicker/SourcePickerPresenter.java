@@ -6,13 +6,6 @@ import com.luthfihariz.newsreader.util.schedulers.BaseSchedulerProvider;
 
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-
 /**
  * Created by luthfihariz on 5/22/17.
  */
@@ -43,7 +36,7 @@ public class SourcePickerPresenter implements SourcePickerContract.Presenter {
     @Override
     public void getSources() {
         mView.showProgressBar();
-        mRepository.getSources()
+        mRepository.feedLocalSources()
                 .subscribeOn(mScheduler.io())
                 .observeOn(mScheduler.ui())
                 .doOnNext(sources -> {

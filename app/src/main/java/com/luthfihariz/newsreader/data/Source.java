@@ -9,7 +9,7 @@ import java.util.Objects;
  * Created by luthfihariz on 5/21/17.
  */
 
-@Entity(tableName = "selected_source")
+@Entity(tableName = "source")
 public class Source {
     @PrimaryKey
     private String id;

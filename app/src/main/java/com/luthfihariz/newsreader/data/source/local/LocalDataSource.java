@@ -35,22 +35,7 @@ public class LocalDataSource implements NewsDataSource {
     }
 
     @Override
-    public Observable<List<Article>> getArticles(String sources) {
-        return null;
-    }
-
-    @Override
-    public Observable<List<Article>> getArticles() {
-        return null;
-    }
-
-    @Override
-    public Observable<List<Source>> getSources() {
-        return null;
-    }
-
-    @Override
-    public Observable<Void> saveUserSelectedSources(final List<Source> sources) {
+    public Observable<Void> saveSources(List<Source> sources) {
         return Completable.fromAction(() -> {
             mRoomDb.getSourceDao().flushTable();
             mRoomDb.getSourceDao().insertAll(sources);
@@ -76,5 +61,25 @@ public class LocalDataSource implements NewsDataSource {
     @Override
     public Observable<Integer> getUserSelectedSourceSize() {
         return Observable.fromPublisher(mRoomDb.getSourceDao().count());
+    }
+
+    @Override
+    public Observable<List<Source>> getSourcesByCategory(String category) {
+        return Observable.fromPublisher(mRoomDb.getSourceDao().getSourcesByCategory(category));
+    }
+
+    @Override
+    public Observable<List<Article>> getArticles(String sources) {
+        throw new RuntimeException("Function not implemented");
+    }
+
+    @Override
+    public Observable<List<Article>> getArticles() {
+        throw new RuntimeException("Function not implemented");
+    }
+
+    @Override
+    public Observable<Void> feedLocalSources() {
+        throw new RuntimeException("Function not implemented");
     }
 }
